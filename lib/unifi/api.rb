@@ -1,4 +1,5 @@
 require "unifi/api/version"
+require "httparty"
 
 module Unifi
   module Api
