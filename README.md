@@ -1,8 +1,6 @@
-# Unifi::Api
+# unifi-api
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/unifi/api`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+unifi-api is a ruby client for the Ubiquiti Unifi wireless controller API. Based on the python implementation at https://github.com/calmh/unifi-api.
 
 ## Installation
 
@@ -22,7 +20,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'unifi-api'
+
+unifi = Unifi::Api::Controller.new('unifi', 'admin', 'password', 8443, 'v4')
+
+aps = unifi.get_aps
+```
 
 ## Development
 
@@ -32,5 +36,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/unifi-api.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hculap/unifi-api.
 
