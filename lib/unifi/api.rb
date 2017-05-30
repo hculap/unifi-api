@@ -39,7 +39,7 @@ module Unifi
       end
 
       def get_alerts_unarchived
-        params ={'json': {'_sort': '-time', 'archived': false}}
+        params ={'json' => {'_sort' => '-time', 'archived' => false}}
         read "#{api_url}list/alarm", params
       end
 
@@ -49,9 +49,9 @@ module Unifi
 
       def get_statistics_24h(endtime)
         params = {
-          'attrs': ["wlan_bytes", "wlan-num_sta", "time"],
-          'start': "#{(endtime - 1.day).to_i * 1000}",
-          'end': "#{(endtime - 1.hour).to_i * 1000}"
+          'attrs' => ["wlan_bytes", "wlan-num_sta", "time"],
+          'start' => "#{(endtime - 1.day).to_i * 1000}",
+          'end' => "#{(endtime - 1.hour).to_i * 1000}"
         }
         return read "#{api_url}stat/report/hourly.site", params, :post
       end
@@ -61,7 +61,7 @@ module Unifi
       end
 
       def get_aps
-        params = {'_depth': 2, 'test': 0}
+        params = {'_depth' => 2, 'test' => 0}
         read "#{api_url}stat/device", params
       end
 
@@ -109,12 +109,12 @@ module Unifi
       end
 
       def archive_all_alerts
-        params = {'cmd': 'archive-all-alarms'}
+        params = {'cmd' => 'archive-all-alarms'}
         read "#{api_url}cmd/evtmgr", params, :post
       end
 
       def create_backup
-        params = {'cmd': 'backup'}
+        params = {'cmd' => 'backup'}
         result = read "#{api_url}cmd/system", params, :post
         result[0]['url']
       end
@@ -130,7 +130,7 @@ module Unifi
 
       def authorize_guest(guest_mac, minutes, up_bandwidth=nil, down_bandwidth=nil, byte_quota=nil, ap_mac=nil)
         cmd = 'authorize-guest'
-        params = {'mac': guest_mac, 'minutes': minutes}
+        params = {'mac' => guest_mac, 'minutes' => minutes}
 
         if up_bandwidth
            params['up'] = up_bandwidth
@@ -150,18 +150,18 @@ module Unifi
 
       def unauthorize_guest(guest_mac)
         cmd = 'unauthorize-guest'
-        params = {'mac': guest_mac}
+        params = {'mac' => guest_mac}
         run_command(cmd, params)
       end
 
       def login
-        params = {'username': @username, 'password': @password}
+        params = {'username' => @username, 'password' => @password}
         params['login'] = 'login' unless version == 'v4'
 
         options = {
-          verify: false,
-          body: params.to_json,
-          headers: {'Content-Type': 'application/json','Accept': 'application/json'}
+          :verify => false,
+          :body => params.to_json,
+          :headers => {'Content-Type' => 'application/json','Accept' => 'application/json'}
         }
 
         res = HTTParty.post(login_url, options)
@@ -177,12 +177,12 @@ module Unifi
 
       def read(url, params=nil, method=:get)
         options = {
-          verify: false,
-          body: params.to_json,
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Cookie': @cookies || ''
+          :verify => false,
+          :body => params.to_json,
+          :headers => {
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Cookie' => @cookies || ''
           }
         }
 
@@ -210,7 +210,7 @@ module Unifi
       end
 
       def mac_cmd(target_mac, command, mgr='stamgr')
-          params = {'mac': target_mac}
+          params = {'mac' => target_mac}
           run_command(command, params, mgr)
       end
 
