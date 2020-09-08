@@ -73,6 +73,15 @@ module Unifi
         read "#{api_url}list/user"
       end
 
+      def get_user(user_mac)
+        read "#{api_url}stat/user/#{user_mac}"
+      end
+
+      def get_guests(within=24)
+        params = {'within': within}
+        read "#{api_url}stat/guest", params
+      end
+
       def get_user_groups
         read "#{api_url}list/usergroup"
       end
