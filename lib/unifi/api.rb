@@ -7,9 +7,9 @@ module Unifi
     end
 
     class Controller
-      attr_accessor :host, :username, :password, :port, :version, :site_id, :cookies
+      attr_accessor :host, :username, :password, :port, :version, :site_id, :cookies, :is_unifi_os
 
-      def initialize(host, username, password, port=8443, version='v2', site_id='default')
+      def initialize(host, username, password, port=8443, version='v2', site_id='default', is_unifi_os=false)
         @host = host
         @port = port
         @version = version
@@ -31,7 +31,15 @@ module Unifi
       end
 
       def login_url
-        @version == 'v4' ? "#{url}api/login" : "#{url}login"
+        if is_unifi_os
+          "#{url}api/auth/login"
+        else
+          if @version == 'v4'
+            "#{url}api/login"
+          else
+            "#{url}login"
+          end
+        end
       end
 
       def get_alerts
@@ -174,6 +182,11 @@ module Unifi
         }
 
         res = HTTParty.post(login_url, options)
+        if res.code == 404
+          is_unifi_os = true
+          res = HTTParty.post(login_url, options)
+        end
+
         @cookies = res.headers['set-cookie']
         get_data res
       end
